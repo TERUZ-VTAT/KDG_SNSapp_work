@@ -1,0 +1,201 @@
+body{
+    height: 100%;
+    padding: 15%;
+    padding-top: 10%;
+    overflow: clip;
+}
+.signupJp{
+    margin-block-end: 0;
+    height: 10px;
+}
+.signup{
+    font-size: 5em;
+    margin-block: 0;
+    height: 70px;
+    /* height: 15%; */
+    /* position: absolute;
+    margin-top: 20%;
+    top: 0; */
+}
+.loginParent{
+    display: flex;
+    align-items: center;
+}
+.login{
+    margin: 2px;
+}
+.userInput{
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    margin-left: 60px;
+}
+.textInput{
+    height: 40px;
+    width: 600px;
+    margin-left: auto;
+    font-size: 1em;
+    background-color: #D9D9D9;
+    border-radius: 10px;
+    margin-right: 70px;
+}
+.normalsize{
+    
+}
+.continue{
+    height: 50px;
+    aspect-ratio: 2.2/1;
+    background-color: #D9D9D9;
+    border: 4px #8D8D8D solid;
+    border-radius: 8px;
+    font-size: 0.8em;
+}
+.continue:hover{
+    height: 50px;
+    aspect-ratio: 2.2/1;
+    background-color: #c3c3c3;
+    border: 4px #4b4b4b solid;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+.continue:active{
+    height: 50px;
+    aspect-ratio: 2.2/1;
+    background-color: #a0a0a0;
+    border: 4px #303030 solid;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+.createAndChange{
+    width: 230px;
+}
+.reverse{
+    flex-direction: row-reverse;
+    padding-right: 70px;
+}
+.alertbox{
+    height: 60px;
+    width: 630px;
+    margin-bottom: 10px;
+    background-color: #c3c3c3;
+    border: #ca0000 3px solid;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5px;
+    padding-left: 15px;
+    animation-play-state: running;
+    animation: slidein 0.6s ease 0s alternate,
+    wait 5s ease 0.6s alternate,
+    slideout 0.6s ease 5s alternate;
+    opacity: 0;
+}
+.alertArea{
+    position: absolute;
+    top: 10px;
+    right: 0;
+    height: 65%;
+    width: 10px;
+    z-index: -1;
+}
+.errortext{
+    margin: 0;
+}
+.errortitle{
+    font-weight: bold;
+}
+.fadein{
+    animation: fadein 0.6s ease 0s alternate;
+}
+.fadeinPlane{
+    animation: fadeinPlane 0.6s ease 0s alternate;
+}
+.fadeout{
+    animation: fadeout 0.6s ease 0s alternate;
+}
+.fadeoutPlane{
+    animation: fadeoutPlane 0.6s ease 0s alternate;;
+}
+.invisible{
+    opacity: 0;
+}
+.disable{
+    display: none;
+}
+.backButton{
+    margin-right: 10px;
+}
+
+@keyframes slidein {
+    from {
+        transform: translate3d(0,0,0);
+        opacity: 0;
+    }
+    to {
+        transform: translate3d(-650px,0,0);
+        opacity: 1;
+    }
+}
+@keyframes wait {
+    from {
+        opacity: 1;
+        transform: translate3d(-650px,0,0);
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(-650px,0,0);
+    }
+}
+@keyframes slideout {
+    from {
+        transform: translate3d(-650px,0,0);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(0,0,0);
+        opacity: 0;
+    }
+}
+@keyframes fadein {
+    from {
+        display: none;
+        opacity: 0;
+    }
+    to {
+        display: flex;
+        opacity: 1;
+    }
+}
+@keyframes fadeinPlane {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fadeout {
+    from {
+        display: flex;
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
+@keyframes fadeoutPlane {
+    from {
+        display: block;
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        display: none;
+    }
+}

@@ -1,2 +1,3 @@
 参考1(ログイン関連)
 https://en-junior.com/django-login/
+参考2(channels関連)(未実践)
