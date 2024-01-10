@@ -214,8 +214,9 @@ header{
     background-color: #363636;
     position: fixed;
     top: 0;
-    left: 0;
+    left: -370px;
     min-width: 280px;
+    max-width: 340px;
     z-index: 3;
     color: white;
     padding: 5px;
@@ -228,6 +229,9 @@ header{
     padding: 0;
     margin: 0;
 }
+.sidemenuli:hover{
+    animation: sidehover 0.4s ease 0s alternate forwards;
+}
 .overlay{
     z-index: 2;
     height: 100%;
@@ -237,4 +241,71 @@ header{
     top: 0;
     left: 0;
     background-color: #000000;
+}
+a{
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+}
+.link{
+    color: white;
+    text-decoration: none;
+}
+.slidein{
+    animation: slidein 0.4s ease 0s alternate forwards;
+}
+.slideout{
+    animation: slideout 0.4s ease 0s alternate forwards;
+}
+.fadein{
+    animation: fadein 0.4s ease 0s alternate forwards;
+}
+.fadeout{
+    animation: fadeout 0.4s ease 0s alternate forwards;
+}
+.disable{
+    display: none;
+}
+@keyframes sidehover {
+    from {
+        
+    }
+    to {
+        background-color: #262626;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding-left: 10px;
+    }
+}
+@keyframes slidein {
+    from {
+        transform: translate3d(0,0,0);
+    }
+    to {
+        transform: translate3d(370px,0,0);
+    }
+}
+@keyframes slideout {
+    from {
+        transform: translate3d(370px,0,0);
+    }
+    to {
+        transform: translate3d(0,0,0);
+    }
+}
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.75;
+    }
+}
+@keyframes fadeout {
+    from {
+        opacity: 0.75;
+    }
+    to {
+        opacity: 0;
+    }
 }

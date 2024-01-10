@@ -8,8 +8,7 @@
 </head>
 <body>
     <header>
-        <!-- サイドメニューが未実装 -->
-        <a type="button" class="menubutton">
+        <a type="button" class="menubutton" id="sidemenubutton">
             <div class="Menuline"></div>
             <div class="Menuline"></div>
             <div class="Menuline"></div>
@@ -44,25 +43,46 @@
     </ul>
     <div class="spacefix"></div>
 
-    <div class="sidemenu">
+    <div class="sidemenu" id="sidemenu">
         <h1>メニュー</h1>
         <ul class="sidemenuul">
             <li class="sidemenuli">
-                <h2>ユーザー情報を表示</h2>
+                <a href="{% url 'accounts:top' %}">
+                    <h2 class="link">ユーザー情報を表示</h2>
+                </a>
             </li>
             <li class="sidemenuli">
-                <h2>別のルームへ移動</h2>
+                <a href="{% url 'chat:top' %}">
+                    <h2 class="link">別のルームへ移動</h2>
+                </a>
             </li>
             <li class="sidemenuli">
-                <h2>アカウントを切り替え</h2>
+                <a href="{% url 'accounts:login' %}">
+                    <h2 class="link">アカウントを切り替え</h2>
+                </a>
             </li>
         </ul>
     </div>
-    <div class="overlay"></div>
+    <a class="disable" id="overlay"></a>
 
     {{ roomID|json_script:"roomID" }}
     {{ user|json_script:"user-id"}}
     <script>
+        const overlay = document.querySelector("#overlay");
+        const sidemenubutton = document.querySelector("#sidemenubutton");
+        const sidemenu = document.querySelector("#sidemenu");
+
+        sidemenubutton.addEventListener("click", opensidemenu);
+        function opensidemenu() {
+            overlay.className = "overlay fadein";
+            sidemenu.className = "sidemenu slidein";
+        }
+        overlay.addEventListener("click", closesidemenu);
+        function closesidemenu() {
+            overlay.className = "overlay disable";
+            sidemenu.className ="sidemenu slideout";
+        }
+
         var end = document.getElementsByClassName('spacefix')[0];
         end.scrollIntoView(false);
 

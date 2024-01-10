@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
@@ -21,7 +20,7 @@ def top(request):
 class SignUp(CreateView):
     form_class = SignUpForm
     template_name = "signup.html" 
-    success_url = reverse_lazy('top')
+    success_url = reverse_lazy('accounts:top')
 
     def form_valid(self, form):
         user = form.save() # formの情報を保存

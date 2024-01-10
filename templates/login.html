@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <a type="button" class="menubutton" id="sidemenubutton">
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+    </a>
     <div>
         <h2 class="signupJp"><nobr>ログイン</nobr></h2>
         <h1 class="signup">LOGIN</h1>
@@ -17,13 +22,13 @@
     <div class="loginParent">
         {% if request.user.is_authenticated %}
         <h3><nobr>アカウントを作成して切り替える場合は</nobr></h3>
-        <a class="login" href="{% url 'signup' %}"><h3>こちら</h3></a>
+        <a class="login" href="{% url 'accounts:signup' %}"><h3>こちら</h3></a>
         {% else %}
         <h3><nobr>アカウントをお持ちでない場合</nobr></h3>
-        <a class="login" href="{% url 'signup' %}"><p>サインアップ</p></a>
+        <a class="login" href="{% url 'accounts:signup' %}"><p>サインアップ</p></a>
         {% endif %}
     </div>
-    <form method="post" action="{% url 'login' %}">
+    <form method="post" action="{% url 'accounts:login' %}">
         {% csrf_token %}
         <div class="userInput" id="userInput">
             <label><nobr>ユーザー名</nobr></label>
@@ -51,9 +56,39 @@
             {% endif %}
         </div>
     </form>
+    <div class="sidemenu" id="sidemenu">
+        <h1>メニュー</h1>
+        <ul class="sidemenuul">
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:top' %}" class="delA">
+                    <h2 class="link">ユーザー情報を表示</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'chat:top' %}" class="delA">
+                    <h2 class="link">別のルームへ移動</h2>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <a class="disable" id="overlay"></a>
     <div class="alertArea">
     </div>
     <script>
+        const overlay = document.querySelector("#overlay");
+        const sidemenubutton = document.querySelector("#sidemenubutton");
+        const sidemenu = document.querySelector("#sidemenu");
+
+        sidemenubutton.addEventListener("click", opensidemenu);
+        function opensidemenu() {
+            overlay.className = "overlay fadein2";
+            sidemenu.className = "sidemenu slidein2";
+        }
+        overlay.addEventListener("click", closesidemenu);
+        function closesidemenu() {
+            overlay.className = "overlay disable";
+            sidemenu.className ="sidemenu slideout2";
+        }
         window.addEventListener('DOMContentLoaded', function(){
             const errors = document.querySelector("#errors").children;
             for (const error of errors) {
