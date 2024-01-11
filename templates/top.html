@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>LoginViewテスト</title>
+    {% load static %}
 </head>
 
-<body>
-    <h2>ユーザー一覧</h2>
+<body style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    <h1>現在未実装です</h1>
+    <h3>このページのこと直前まで忘れてました; ;</h3>
+    {% comment %} <h2>ユーザー一覧</h2>
     {% for user in users %}
     <li>{{ user.username }}</li>
-    {% endfor %}
+    {% endfor %} {% endcomment %}
+    <a href="{% url 'accounts:logout' %}" style="height:80px; width:200px; background-color:#8D8D8D; font-size:1.5em; border-radius:10px; border:3px #252525 solid; display:flex; align-items:center; justify-content:center;"><p style="margin:0;">お気持ち程度の<br>ログアウトボタン</p></a>
 </body>
 
 </html>
