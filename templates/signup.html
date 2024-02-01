@@ -43,7 +43,7 @@
             {{ form.username|add_class:"textInput" }}
         </div>
         <div class="userInput" id="emailInput">
-            <label><nobr>メールアドレス(任意)</nobr></label>
+            <label><nobr>メールアドレス</nobr></label>
             {{ form.email|add_class:"textInput" }}
         </div>
         <div class="userInput disable" id="passwordInput1">
@@ -101,6 +101,7 @@
             overlay.className = "overlay fadein2";
             sidemenu.className = "sidemenu slidein2";
         }
+
         overlay.addEventListener("click", closesidemenu);
         function closesidemenu() {
             overlay.className = "overlay disable";
@@ -108,6 +109,7 @@
         }
         const continueButton = document.querySelector("input.continue");
         const userNameInput = document.querySelector("input#id_username");
+        const email_input = document.querySelector("input#id_email");
 
         document.querySelector('#userInput').onkeydown = function(e) {
             if (e.keyCode === 13) {  // enter, return
@@ -158,6 +160,9 @@
         function transitionToNext() {
             if (userNameInput.value == "") {
                 sendAlert("ユーザー名を入力してください");
+            }
+            else if (email_input.value == "") {
+                sendAlert("メールアドレスを入力してください");
             }
             else {
                 const userInput = document.querySelector("#userInput");

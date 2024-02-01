@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/passwordReset.css' %}">
+    <title>メールアドレスを変更</title>
+</head>
+
+<body>
+    <a type="button" class="menubutton" id="sidemenubutton">
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+    </a>
+
+
+    <h1>メールアドレスを変更</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <input type="text" class="disable" value={{user.id}} name="userid" id="userid">
+        <input type="text" class="disable" value={{user.password}} name="hashedPass" id="hashedPass">
+        <p><span>パスワード:</span><input type="password" name="password" id="password"></p>
+        <p><span>新しいメールアドレス:</span><input type="email" name="new_mail" id="new_mail"></p>
+        <button type="submit">メールアドレスを変更</button>
+    </form>
+    <p><span>現在のemail:</span><span style="font-weight: bold;">{{ user.email }}</span></p>
+
+
+    <div class="sidemenu" id="sidemenu">
+        <h1>メニュー</h1>
+        <ul class="sidemenuul">
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:top' %}" class="delA">
+                    <h2 class="link">ユーザー情報を表示</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'chat:top' %}" class="delA">
+                    <h2 class="link">別のルームへ移動</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:login' %}" class="delA">
+                    <h2 class="link">アカウントを切り替え</h2>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <a class="disable" id="overlay"></a>
+
+    <script>
+        const overlay = document.querySelector("#overlay");
+        const sidemenubutton = document.querySelector("#sidemenubutton");
+        const sidemenu = document.querySelector("#sidemenu");
+
+        sidemenubutton.addEventListener("click", opensidemenu);
+        function opensidemenu() {
+            overlay.className = "overlay fadein2";
+            sidemenu.className = "sidemenu slidein2";
+        }
+
+        overlay.addEventListener("click", closesidemenu);
+        function closesidemenu() {
+            overlay.className = "overlay disable";
+            sidemenu.className = "sidemenu slideout2";
+        }
+    </script>
+</body>
+
+</html>

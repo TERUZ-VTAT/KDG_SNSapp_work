@@ -84,7 +84,7 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = "KDG_SNSapp.asgi.application"
+ASGI_APPLICATION = 'KDG_SNSapp.asgi.application'
 
 WSGI_APPLICATION = 'KDG_SNSapp.wsgi.application'
 
@@ -141,7 +141,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     [
-        os.path.join(BASE_DIR, "static"), 
+        os.path.join(BASE_DIR, "static"),
     ]
 )
 
@@ -149,3 +149,8 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

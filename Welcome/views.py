@@ -3,8 +3,11 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 # Create your views here.
+
+
 class Welcome(TemplateView):
     template_name = 'test.html'
 
+
 def firstPage(request):
-    return redirect('welcome')
+    return redirect('chat/')
