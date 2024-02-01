@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Room</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/room.css' %}">
+</head>
+<body>
+    <header>
+        <a type="button" class="menubutton" id="sidemenubutton">
+            <div class="Menuline"></div>
+            <div class="Menuline"></div>
+            <div class="Menuline"></div>
+        </a>
+        <div class="roomID"><p class="roomname">{{ roomID }}</p></div>
+        <div class="rightContents">
+            <!-- チャットの検索機能はまだ未実装 -->
+            <input class="findChat" placeholder="チャットを検索"><img src="{% static 'images/find.svg' %}" alt="" class="findIcon" ondragstart="return false;" ondrop="return false;">
+            <a class="state" id="stateoff"><div class="stateIcon off"></div><p class="stateCount" id="offCount">100</p></a>
+            <a class="state" id="stateon"><div class="stateIcon on"></div><p class="stateCount" id="onCount">29</p></a>
+        </div>
+    </header>
+    <div class="bottom">
+        <input class="messageInput" id="chat-message-input" type="text">
+        <div class="sendButtonparent">
+            <input class="sendButton" id="chat-message-submit" type="button" src="{% static 'images/find.svg' %}">
+            <img src="{% static 'images/sendIcon.svg' %}" alt="" class="sendIcon" ondragstart="return false;" ondrop="return false;">
+        </div>
+    </div>
+    <ul class="messages">
+    {% for chat in allMessage %}
+    <li class="messageli">
+        <div class="messageBox">
+            <p class="message">{{ chat.sendMessage }}</p>
+            <div class="messageInfo">
+                <p class="timeStamp" >{{ chat.sendAt }}</p>
+                <p class="sendUser" >{{ chat.sendUser }}</p>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    </ul>
+    <div class="spacefix"></div>
+
+    <div class="sidemenu" id="sidemenu">
+        <h1>メニュー</h1>
+        <ul class="sidemenuul">
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:top' %}">
+                    <h2 class="link">ユーザー情報を表示</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'chat:top' %}">
+                    <h2 class="link">別のルームへ移動</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:login' %}">
+                    <h2 class="link">アカウントを切り替え</h2>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <a class="disable" id="overlay"></a>
+
+    {{ roomID|json_script:"roomID" }}
+    {{ user|json_script:"user-id"}}
+    <script>
+        const overlay = document.querySelector("#overlay");
+        const sidemenubutton = document.querySelector("#sidemenubutton");
+        const sidemenu = document.querySelector("#sidemenu");
+
+        sidemenubutton.addEventListener("click", opensidemenu);
+        function opensidemenu() {
+            overlay.className = "overlay fadein";
+            sidemenu.className = "sidemenu slidein";
+        }
+        overlay.addEventListener("click", closesidemenu);
+        function closesidemenu() {
+            overlay.className = "overlay disable";
+            sidemenu.className ="sidemenu slideout";
+        }
+
+        var end = document.getElementsByClassName('spacefix')[0];
+        end.scrollIntoView(false);
+
+        const roomID = JSON.parse(document.getElementById('roomID').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomID
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            var date_obj = new Date();
+
+
+            const parser = new DOMParser();
+
+            //dataはconsumerのreceiveのasync_to_sync(self.channel_layer.group_send)とchat_message関数から受け取ってる
+            const data = JSON.parse(e.data);
+            // ViewMessage
+            var liTag = document.createElement('li');
+            liTag.className = "messageli";
+
+            var messageBox = document.createElement('div');
+            messageBox.className = "messageBox";
+
+            var messageTag = document.createElement('p');
+            messageTag.className = "message";
+            messageTag.innerHTML = data.message;
+
+            var messageInfo = document.createElement('div');
+            messageInfo.className = "messageInfo";
+
+            var timeStamp = document.createElement('p');
+            timeStamp.className = "timeStamp"
+            timeStamp.innerHTML = `${date_obj.getFullYear()}年${date_obj.getMonth()+1}月${date_obj.getDate()}日${date_obj.getHours()}:${date_obj.getMinutes().toString().padStart(2, '0')}`;
+
+            var sendUser = document.createElement('p');
+            sendUser.className = "sendUser";
+            sendUser.innerHTML = data.user;
+
+            var ul = document.getElementsByTagName('ul')[0];
+            var li = ul.appendChild(liTag);
+            var messBox = li.appendChild(messageBox);
+            messBox.appendChild(messageTag);
+            var messInfo = messBox.appendChild(messageInfo);
+            messInfo.appendChild(timeStamp);
+            messInfo.appendChild(sendUser);
+
+            var end = document.getElementsByClassName('spacefix')[0];
+            end.scrollIntoView(false);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeydown = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const message = document.querySelector('#chat-message-input').value;
+            if (message !== '') {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const userID = JSON.parse(document.getElementById('user-id').textContent);
+                chatSocket.send(JSON.stringify({
+                    'user': userID,
+                    'message': message,
+                    'roomID': roomID
+                }));
+                messageInputDom.value = '';
+            }
+        };
+    </script>
+</body>
+</html>

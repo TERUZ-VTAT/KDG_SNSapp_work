@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Chat Rooms</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+    <a type="button" class="menubutton" id="sidemenubutton">
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+    </a>
+    <h1>入室するルームのIDを入力してください。</h1>
+    <input id="room-name-input" type="text" size="100" class="input"><br>
+    <div class="reverse">
+        <input id="room-name-submit" type="button" value="入室" class="enter">
+    </div>
+
+    <div class="sidemenu" id="sidemenu">
+        <h1>メニュー</h1>
+        <ul class="sidemenuul">
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:top' %}" class="delA">
+                    <h2 class="link">ユーザー情報を表示</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:login' %}" class="delA">
+                    <h2 class="link">アカウントを切り替え</h2>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <a class="disable" id="overlay"></a>
+    <div class="alertArea">
+    </div>
+    <script>
+        const overlay = document.querySelector("#overlay");
+        const sidemenubutton = document.querySelector("#sidemenubutton");
+        const sidemenu = document.querySelector("#sidemenu");
+
+        sidemenubutton.addEventListener("click", opensidemenu);
+        function opensidemenu() {
+            overlay.className = "overlay fadein";
+            sidemenu.className = "sidemenu slidein";
+        }
+        overlay.addEventListener("click", closesidemenu);
+        function closesidemenu() {
+            overlay.className = "overlay disable";
+            sidemenu.className ="sidemenu slideout";
+        }
+        document.querySelector('#room-name-input').focus();
+        document.querySelector('#room-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#room-name-submit').click();
+            }
+        };
+
+        document.querySelector('#room-name-submit').onclick = function(e) {
+            var roomName = document.querySelector('#room-name-input').value;
+            if (roomName != "") {
+                window.location.pathname = '/chat/' + roomName + '/';
+            }
+            else {
+                sendAlert("空白のルーム名は指定できません");
+            }
+        };
+        function sendAlert(alertText) {
+            const alertArea = document.querySelector("div.alertArea");
+
+            let alertBox = document.createElement("div");
+            alertBox.className = "alertbox";
+
+            let errorTitle = document.createElement("p");
+            errorTitle.className = "errortext errortitle";
+            errorTitle.innerText = "エラー";
+
+            let errorText = document.createElement("p");
+            errorText.className = "errortext";
+            errorText.innerText = alertText;
+
+            alertBoxDOM = alertArea.appendChild(alertBox);
+            alertBoxDOM.appendChild(errorTitle);
+            alertBoxDOM.appendChild(errorText);
+            window.setTimeout(deleteAlert, 5500);
+        }
+        function deleteAlert() {
+            const alertBox = document.querySelector("div.alertbox");
+            alertBox.remove();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LoginViewテスト</title>
+    {% load static %}
+    {% load static widget_tweaks %}
+    <link rel="stylesheet" href="{% static 'css/top.css' %}">
+</head>
+
+<body style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+    <a type="button" class="menubutton" id="sidemenubutton">
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+        <div class="Menuline"></div>
+    </a>
+    <div class="mainFrame">
+        <div class="titleframe">
+            <button class="iconframe" href="" id="iconframe" onclick="openpopup()">
+                {% if icon %}
+                {% for c in icon %}
+                <img src="media/{{ MEDIA_URL }}{{c.filepath }}" class="icon" id={{c.filepath}}>
+                {% endfor %}
+                {% else %}
+                <span>icon</span>
+                {% endif %}
+            </button>
+            <div class="usernames">
+                <h1 class="username_t">ユーザー名:</h1>
+                <h1 class="username">{{ user.get_username }}</h1>
+            </div>
+        </div>
+        <div class="passwordframe">
+            <h1 class="password">メールアドレス:</h1>
+            <h1 class="password">{{ user.email }}</h1>
+            <a class="passwordReset" type="button" href="{% url 'accounts:changemail' %}">
+                <h3>メールアドレスを変更</h3>
+            </a>
+        </div>
+        <div class="passwordframe">
+            <h1 class="password">パスワード:・・・・・・・・</h1>
+            <a class="passwordReset" type="button" href="{% url 'password_reset' %}">
+                <h3>パスワードをリセット</h3>
+            </a>
+        </div>
+        <form method="post" action="{% url 'accounts:logout' %}" class="logoutframe">
+            {% csrf_token %}
+            <button href="{% url 'accounts:logout' %}" class="logout"><span class="logout2">ログアウト</span></button>
+        </form>
+    </div>
+    <div class="sidemenu" id="sidemenu">
+        <h1>メニュー</h1>
+        <ul class="sidemenuul">
+            <li class="sidemenuli">
+                <a href="{% url 'chat:top' %}" class="delA">
+                    <h2 class="link">別のルームへ移動</h2>
+                </a>
+            </li>
+            <li class="sidemenuli">
+                <a href="{% url 'accounts:login' %}" class="delA">
+                    <h2 class="link">アカウントを切り替え</h2>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <a class="disable" id="overlay"></a>
+    <div class="popupframe disable" id="popup">
+        <h1>アイコンを選択</h1>
+        <h3>プレビュー</h3>
+        <div class="previewframe">
+            <img class="preview" id="preview">
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- {{ form.as_p }} -->
+            {% render_field form.userid value=user.id class="disable"%}
+            {% render_field form.filepath onchange="previewImage(this);"%}
+            <p>※アップロードに時間がかかる場合があります。</p>
+            <!-- <input type="file" accept="image/*" id="imgFile" onchange="previewImage(this);" name="imgFile"> -->
+            <input type="submit" value="適用" class="accept">
+        </form>
+        <button class="close" onclick="closepopup()">閉じる</button>
+    </div>
+</body>
+
+<script>
+    const overlay = document.querySelector("#overlay");
+    const sidemenubutton = document.querySelector("#sidemenubutton");
+    const sidemenu = document.querySelector("#sidemenu");
+
+    sidemenubutton.addEventListener("click", opensidemenu);
+    function opensidemenu() {
+        overlay.className = "overlay fadein2";
+        sidemenu.className = "sidemenu slidein2";
+    }
+
+    overlay.addEventListener("click", closesidemenu);
+    function closesidemenu() {
+        overlay.className = "overlay disable";
+        sidemenu.className = "sidemenu slideout2";
+    }
+
+    const icon = document.querySelector("#iconframe");
+
+    icon.addEventListener("click");
+
+    function previewImage(obj) {
+        var fileReader = new FileReader();
+        fileReader.onload = (function () {
+            document.getElementById('preview').src = fileReader.result;
+        });
+        fileReader.readAsDataURL(obj.files[0]);
+    }
+
+    function openpopup() {
+        let popup = document.querySelector("#popup")
+        popup.className = "popupframe"
+    }
+    function closepopup() {
+        let popup = document.querySelector("#popup")
+        popup.className = "popupframe disable"
+    }
+</script>
+
+</html>
